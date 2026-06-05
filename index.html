@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Where to Live in Hackettstown, NJ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; }
+    #map { width: 100%; height: 100vh; }
+
+    .legend {
+      background: #fff;
+      padding: 8px 10px;
+      font-size: 12px;
+      line-height: 1.4;
+      border-radius: 4px;
+      box-shadow: 0 0 4px rgba(0,0,0,0.3);
+    }
+    .legend i {
+      width: 14px;
+      height: 14px;
+      float: left;
+      margin-right: 6px;
+      opacity: 0.9;
+    }
+
+    .leaflet-popup-content {
+      font-size: 13px;
+    }
+    .popup-title {
+      font-weight: 600;
+      color: #f36f21; /* Hackettstown Tiger orange */
+      margin-bottom: 4px;
+    }
+    .popup-legend {
+      margin-top: 6px;
+      padding-top: 4px;
+      border-top: 1px solid #ddd;
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  // --- Base map ---
+  const map = L.map('map').setView([40.853, -74.829], 13); // whole-town frame
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap'
+  }).addTo(map);
+
+  // --- Style helpers (Tiger theme) ---
+  function neighborhoodStyle(feature) {
+    return {
+      color: '#000000',
+      weight: 2,
+      fillColor: feature.properties.fillColor || '#f36f21',
+      fillOpacity: 0.35
+    };
+  }
+
+  function valueStyle(feature) {
+    const tier = feature.properties.tier;
+    let fill = '#ffe5c7'; // entry-level default
+
+    if (tier === 'mid') fill = '#f9a64a';
+    if (tier === 'premium') fill = '#f36f21';
+
+    return {
+      color: '#000000',
+      weight: 1,
+      fillColor: fill,
+      fillOpacity: 0.35
+    };
+  }
+
+  const iconBlack = L.icon({
+    iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34]
+  });
+
+  // --- GeoJSON placeholders ---
+  // Replace these with your actual GeoJSON files or inline objects.
+
+  const neighborhoodsGeoJSON = {/* TODO: Willow Grove, College View, Mountain View, Downtown */};
+  const valueZonesGeoJSON = {/* TODO: entry/mid/premium polygons */};
+  const transitGeoJSON = {/* TODO: Hackettstown Station, Rt 46/517 nodes */};
+  const schoolsGeoJSON = {/* TODO: High School, Centenary University */};
+  const parksGeoJSON = {/* TODO: Riverfront Park, Stephens State Park */};
+  const riverGeoJSON = {/* TODO: Musconetcong River line */};
+
+  // --- Tooltips / popups ---
+  function neighborhoodPopup(feature, layer) {
+    const p = feature.properties;
+    const tierLabel = p.tierLabel || 'Mixed';
+    const tierDesc = p.tierDesc || 'Varied home values';
+
+    const html = `
+      <div class="popup-title">🏡 ${p.name}</div>
+      <div><strong>Vibe:</strong> ${p.vibe || 'Neighborhood in Hackettstown'}</div>
+      <div><strong>Walkability:</strong> ${p.walkability || 'Moderate'}</div>
+      <div><strong>Transit:</strong> ${p.transit || 'Near Hackettstown Station'}</div>
+      <div><strong>Parks:</strong> ${p.parks || 'Nearby green space'}</div>
+      <div class="popup-legend">
+        <strong>Home-Value Tier:</strong> ${tierLabel}<br/>
+        🟧 Premium: $600K+<br/>
+        🟨 Mid-range: $400–600K<br/>
+        🟦 Entry-level: &lt;$400K
+      </div>
+    `;
+    layer.bindPopup(html);
+  }
+
+  function pointPopup(feature, layer) {
+    const p = feature.properties;
+    const html = `
+      <div class="popup-title">${p.icon || ''} ${p.name}</div>
+      <div>${p.desc || ''}</div>
+    `;
+    layer.bindPopup(html);
+  }
+
+  // --- Layers ---
+  const neighborhoodsLayer = L.geoJSON(neighborhoodsGeoJSON, {
+    style: neighborhoodStyle,
+    onEachFeature: neighborhoodPopup
+  });
+
+  const valueLayer = L.geoJSON(valueZonesGeoJSON, {
+    style: valueStyle,
+    onEachFeature: neighborhoodPopup
+  });
+
+  const transitLayer = L.geoJSON(transitGeoJSON, {
+    pointToLayer: (f, latlng) => L.marker(latlng, { icon: iconBlack }),
+    onEachFeature: pointPopup
+  });
+
+  const schoolsLayer = L.geoJSON(schoolsGeoJSON, {
+    pointToLayer: (f, latlng) => L.marker(latlng, { icon: iconBlack }),
+    onEachFeature: pointPopup
+  });
+
+  const parksLayer = L.geoJSON(parksGeoJSON, {
+    style: { color: '#2e7d32', weight: 2, fillColor: '#66bb6a', fillOpacity: 0.4 },
+    onEachFeature: pointPopup
+  });
+
+  const riverLayer = L.geoJSON(riverGeoJSON, {
+    style: { color: '#1e88e5', weight: 3 }
+  });
+
+  // --- Layer control ---
+  const overlays = {
+    'Neighborhoods': neighborhoodsLayer,
+    'Home-Value Shading': valueLayer,
+    'Transit': transitLayer,
+    'Schools': schoolsLayer,
+    'Parks': parksLayer,
+    'River': riverLayer
+  };
+
+  L.control.layers(null, overlays, { collapsed: false }).addTo(map);
+
+  // Add default visible layers
+  neighborhoodsLayer.addTo(map);
+  valueLayer.addTo(map);
+  parksLayer.addTo(map);
+  riverLayer.addTo(map);
+
+  // --- Legend ---
+  const legend = L.control({ position: 'bottomright' });
+
+  legend.onAdd = function () {
+    const div = L.DomUtil.create('div', 'legend');
+    div.innerHTML = `
+      <strong>Home-Value Tiers</strong><br/>
+      <i style="background:#f36f21"></i> Premium ($600K+)<br/>
+      <i style="background:#f9a64a"></i> Mid-range ($400–600K)<br/>
+      <i style="background:#ffe5c7"></i> Entry-level (&lt;$400K)
+    `;
+    return div;
+  };
+
+  legend.addTo(map);
+</script>
+</body>
+</html>
