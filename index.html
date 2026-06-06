@@ -50,7 +50,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
   // --- Base map ---
-  const map = L.map('map').setView([40.853, -74.829], 17); // street-level frame
+  const map = L.map('map').setView([40.853, -74.829], 16); // street view frame
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -63,21 +63,6 @@
       color: '#000000',
       weight: 2,
       fillColor: feature.properties.fillColor || '#f36f21',
-      fillOpacity: 0.35
-    };
-  }
-
-  function valueStyle(feature) {
-    const tier = feature.properties.tier;
-    let fill = '#ffe5c7'; // entry-level default
-
-    if (tier === 'mid') fill = '#f9a64a';
-    if (tier === 'premium') fill = '#f36f21';
-
-    return {
-      color: '#000000',
-      weight: 1,
-      fillColor: fill,
       fillOpacity: 0.35
     };
   }
@@ -192,55 +177,6 @@
     }
   ]
 };
-  const valueZonesGeoJSON = {
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": { "tier": "entry" },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [[
-          [-74.8330, 40.8528],
-          [-74.8295, 40.8529],
-          [-74.8290, 40.8508],
-          [-74.8328, 40.8507],
-          [-74.8330, 40.8528]
-        ]]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": { "tier": "mid" },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [[
-          [-74.8360, 40.8540],
-          [-74.8330, 40.8541],
-          [-74.8298, 40.8515],
-          [-74.8300, 40.8490],
-          [-74.8360, 40.8492],
-          [-74.8360, 40.8540]
-        ]]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": { "tier": "premium" },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [[
-          [-74.8250, 40.8570],
-          [-74.8210, 40.8572],
-          [-74.8195, 40.8544],
-          [-74.8208, 40.8524],
-          [-74.8245, 40.8530],
-          [-74.8250, 40.8570]
-        ]]
-      }
-    }
-  ]
-};
   const transitGeoJSON = {
   "type": "FeatureCollection",
   "features": [
@@ -320,26 +256,6 @@
     }
   ]
 };
-  const riverGeoJSON = {
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": { "name": "Musconetcong River" },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [-74.8380, 40.8500],
-          [-74.8350, 40.8505],
-          [-74.8320, 40.8508],
-          [-74.8290, 40.8510],
-          [-74.8260, 40.8513],
-          [-74.8230, 40.8515]
-        ]
-      }
-    }
-  ]
-};
 
   // --- Tooltips / popups ---
   function neighborhoodPopup(feature, layer) {
@@ -378,10 +294,6 @@
     onEachFeature: neighborhoodPopup
   });
 
-  const valueLayer = L.geoJSON(valueZonesGeoJSON, {
-    style: valueStyle,
-    onEachFeature: neighborhoodPopup
-  });
 
   const transitLayer = L.geoJSON(transitGeoJSON, {
     pointToLayer: (f, latlng) => L.marker(latlng, { icon: iconBlack }),
@@ -398,27 +310,20 @@
     onEachFeature: pointPopup
   });
 
-  const riverLayer = L.geoJSON(riverGeoJSON, {
-    style: { color: '#1e88e5', weight: 3 }
-  });
 
   // --- Layer control ---
   const overlays = {
     'Neighborhoods': neighborhoodsLayer,
-    'Home-Value Shading': valueLayer,
     'Transit': transitLayer,
     'Schools': schoolsLayer,
-    'Parks': parksLayer,
-    'River': riverLayer
+    'Parks': parksLayer
   };
 
   L.control.layers(null, overlays, { collapsed: false }).addTo(map);
 
   // Add default visible layers
   neighborhoodsLayer.addTo(map);
-  valueLayer.addTo(map);
   parksLayer.addTo(map);
-  riverLayer.addTo(map);
 
   // --- Legend ---
   const legend = L.control({ position: 'bottomright' });
