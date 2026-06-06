@@ -50,7 +50,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
   // --- Base map ---
-  const map = L.map('map').setView([40.853, -74.829], 16); // street view frame
+  const map = L.map('map').setView([40.853, -74.829], 16); // whole-town frame
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -177,23 +177,6 @@
     }
   ]
 };
-  const transitGeoJSON = {
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Hackettstown Station",
-        "icon": "🚉",
-        "desc": "NJ Transit Montclair-Boonton Line"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [-74.8294, 40.8520]
-      }
-    }
-  ]
-};
 
   // --- Tooltips / popups ---
   function neighborhoodPopup(feature, layer) {
@@ -233,88 +216,50 @@
   });
 
 
-  const transitLayer = L.geoJSON(transitGeoJSON, {
-    pointToLayer: (f, latlng) => L.marker(latlng, { icon: iconBlack }),
-    onEachFeature: pointPopup
-  });
 
   const schoolsGeoJSON = {
   "type": "FeatureCollection",
   "features": [
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Hatchery Hill Elementary School",
-        "icon": "🏫",
-        "desc": "Grades PK–2 | 398 5th Ave | (908) 852-8550"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [-74.8364, 40.8436]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Willow Grove Elementary School",
-        "icon": "🏫",
-        "desc": "Grades 2–4 | 601 Willow Grove St | (908) 852-2805"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [-74.8181, 40.8632]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Hackettstown Middle School",
-        "icon": "🏫",
-        "desc": "Grades 5–8 | 500 Washington St | (908) 852-8554"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [-74.8279, 40.8500]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Hackettstown High School",
-        "icon": "🏫",
-        "desc": "Grades 9–12 | 599 Warren St | Home of the Tigers"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [-74.8297, 40.8431]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Centenary University",
-        "icon": "🎓",
-        "desc": "400 Jefferson St | Private liberal arts university"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [-74.8343, 40.8472]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Hackettstown Medical Center",
-        "icon": "🏥",
-        "desc": "651 Willow Grove St | Atlantic Health System | Open 24 hours"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [-74.8159, 40.8617]
-      }
-    }
+    { "type": "Feature", "properties": { "name": "Hatchery Hill Elementary School", "icon": "🏫", "desc": "Grades PK-2 | 398 5th Ave | (908) 852-8550" }, "geometry": { "type": "Point", "coordinates": [-74.8364, 40.8436] } },
+    { "type": "Feature", "properties": { "name": "Willow Grove Elementary School", "icon": "🏫", "desc": "Grades 2-4 | 601 Willow Grove St | (908) 852-2805" }, "geometry": { "type": "Point", "coordinates": [-74.8181, 40.8632] } },
+    { "type": "Feature", "properties": { "name": "Hackettstown Middle School", "icon": "🏫", "desc": "Grades 5-8 | 500 Washington St | (908) 852-8554" }, "geometry": { "type": "Point", "coordinates": [-74.8279, 40.8500] } },
+    { "type": "Feature", "properties": { "name": "Hackettstown High School", "icon": "🏫", "desc": "Grades 9-12 | 599 Warren St | Home of the Tigers" }, "geometry": { "type": "Point", "coordinates": [-74.8297, 40.8431] } },
+    { "type": "Feature", "properties": { "name": "Centenary University", "icon": "🎓", "desc": "400 Jefferson St | Private liberal arts university" }, "geometry": { "type": "Point", "coordinates": [-74.8343, 40.8472] } }
   ]
 };
+
+  const hospitalGeoJSON = {
+  "type": "FeatureCollection",
+  "features": [
+    { "type": "Feature", "properties": { "name": "Hackettstown Medical Center", "icon": "🏥", "desc": "651 Willow Grove St | Atlantic Health System | Open 24 hours" }, "geometry": { "type": "Point", "coordinates": [-74.8159, 40.8617] } }
+  ]
+};
+
+  const transitGeoJSON = {
+  "type": "FeatureCollection",
+  "features": [
+    { "type": "Feature", "properties": { "name": "Hackettstown Train Station", "icon": "🚉", "desc": "498 Valentine St at Beatty St | NJ Transit Morristown Line | Free parking" }, "geometry": { "type": "Point", "coordinates": [-74.8420, 40.8455] } }
+  ]
+};
+
+  const worshipGeoJSON = {
+  "type": "FeatureCollection",
+  "features": [
+    { "type": "Feature", "properties": { "name": "Trinity United Methodist Church", "icon": "⛪", "desc": "213 Main St | (908) 852-3020" }, "geometry": { "type": "Point", "coordinates": [-74.8271, 40.8526] } },
+    { "type": "Feature", "properties": { "name": "Hackettstown Baptist Church", "icon": "⛪", "desc": "916 County Rd 517 | (908) 852-6577" }, "geometry": { "type": "Point", "coordinates": [-74.8240, 40.8709] } },
+    { "type": "Feature", "properties": { "name": "Mountaintop Church", "icon": "⛪", "desc": "6 Naughright Rd | (908) 850-5477" }, "geometry": { "type": "Point", "coordinates": [-74.7833, 40.8506] } },
+    { "type": "Feature", "properties": { "name": "Hope Center Hackettstown", "icon": "⛪", "desc": "450 Schooleys Mountain Rd | (201) 798-1234" }, "geometry": { "type": "Point", "coordinates": [-74.8215, 40.8268] } },
+    { "type": "Feature", "properties": { "name": "Breakpoint Community Church", "icon": "⛪", "desc": "493 US-46" }, "geometry": { "type": "Point", "coordinates": [-74.7906, 40.8521] } }
+  ]
+};
+
+  const fireGeoJSON = {
+  "type": "FeatureCollection",
+  "features": [
+    { "type": "Feature", "properties": { "name": "Hackettstown Fire Department", "icon": "🚒", "desc": "101 Miller St | (908) 852-3300 | Open 24 hours" }, "geometry": { "type": "Point", "coordinates": [-74.8266, 40.8586] } }
+  ]
+};
+
   const schoolsLayer = L.geoJSON(schoolsGeoJSON, {
     pointToLayer: (f, latlng) => L.marker(latlng, { icon: iconBlack }),
     onEachFeature: pointPopup
@@ -322,11 +267,35 @@
 
 
 
+  const hospitalLayer = L.geoJSON(hospitalGeoJSON, {
+    pointToLayer: (f, latlng) => L.marker(latlng, { icon: iconBlack }),
+    onEachFeature: pointPopup
+  });
+
+  const transitLayer = L.geoJSON(transitGeoJSON, {
+    pointToLayer: (f, latlng) => L.marker(latlng, { icon: iconBlack }),
+    onEachFeature: pointPopup
+  });
+
+  const worshipLayer = L.geoJSON(worshipGeoJSON, {
+    pointToLayer: (f, latlng) => L.marker(latlng, { icon: iconBlack }),
+    onEachFeature: pointPopup
+  });
+
+  const fireLayer = L.geoJSON(fireGeoJSON, {
+    pointToLayer: (f, latlng) => L.marker(latlng, { icon: iconBlack }),
+    onEachFeature: pointPopup
+  });
+
   // --- Layer control ---
   const overlays = {
-    'Neighborhoods': neighborhoodsLayer,
+    'Schools': schoolsLayer,
+    'Hospital': hospitalLayer,
     'Transit': transitLayer,
-    'Schools & Hospital': schoolsLayer
+    'Places of Worship': worshipLayer,
+    'Fire Department': fireLayer,
+    'Neighborhoods': neighborhoodsLayer,
+    'Schools': schoolsLayer
   };
 
   L.control.layers(null, overlays, { collapsed: false }).addTo(map);
@@ -334,6 +303,8 @@
   // Add default visible layers
   neighborhoodsLayer.addTo(map);
   schoolsLayer.addTo(map);
+  hospitalLayer.addTo(map);
+  transitLayer.addTo(map);
 
   // --- Legend ---
   const legend = L.control({ position: 'bottomright' });
