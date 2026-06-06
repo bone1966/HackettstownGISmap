@@ -92,12 +92,260 @@
   // --- GeoJSON placeholders ---
   // Replace these with your actual GeoJSON files or inline objects.
 
-  const neighborhoodsGeoJSON = {/* TODO: Willow Grove, College View, Mountain View, Downtown */};
-  const valueZonesGeoJSON = {/* TODO: entry/mid/premium polygons */};
-  const transitGeoJSON = {/* TODO: Hackettstown Station, Rt 46/517 nodes */};
-  const schoolsGeoJSON = {/* TODO: High School, Centenary University */};
-  const parksGeoJSON = {/* TODO: Riverfront Park, Stephens State Park */};
-  const riverGeoJSON = {/* TODO: Musconetcong River line */};
+  const neighborhoodsGeoJSON = {/* TODO: Willow Grove, College View, Mountain View, Downtown */{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Willow Grove",
+        "vibe": "Quiet residential, close to schools",
+        "walkability": "Moderate",
+        "transit": "6 min to Station",
+        "parks": "Near Riverfront Park",
+        "tierLabel": "Mid-range",
+        "tierDesc": "$400–600K",
+        "fillColor": "#f9a64a"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-74.8365, 40.8538],
+          [-74.8332, 40.8539],
+          [-74.8298, 40.8514],
+          [-74.8301, 40.8489],
+          [-74.8359, 40.8492],
+          [-74.8365, 40.8538]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "College View",
+        "vibe": "Walkable, near Centenary University",
+        "walkability": "High",
+        "transit": "Quick access to 46",
+        "parks": "Close to Stephens State Park",
+        "tierLabel": "Mid-range",
+        "tierDesc": "$400–600K",
+        "fillColor": "#f9a64a"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-74.8297, 40.8568],
+          [-74.8268, 40.8570],
+          [-74.8249, 40.8548],
+          [-74.8254, 40.8529],
+          [-74.8292, 40.8530],
+          [-74.8297, 40.8568]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mountain View",
+        "vibe": "Hillside homes, quiet streets",
+        "walkability": "Low",
+        "transit": "Close to Rt 517",
+        "parks": "Near Stephens State Park",
+        "tierLabel": "Premium",
+        "tierDesc": "$600K+",
+        "fillColor": "#f36f21"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-74.8248, 40.8567],
+          [-74.8210, 40.8572],
+          [-74.8195, 40.8544],
+          [-74.8208, 40.8524],
+          [-74.8245, 40.8530],
+          [-74.8248, 40.8567]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Downtown",
+        "vibe": "Walkable, shops & dining",
+        "walkability": "High",
+        "transit": "3 min to Station",
+        "parks": "Riverfront Park nearby",
+        "tierLabel": "Entry-level",
+        "tierDesc": "<$400K",
+        "fillColor": "#ffe5c7"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-74.8320, 40.8530],
+          [-74.8290, 40.8531],
+          [-74.8285, 40.8510],
+          [-74.8318, 40.8509],
+          [-74.8320, 40.8530]
+        ]]
+      }
+    }
+  ]
+}
+};
+  const valueZonesGeoJSON = {/* TODO: entry/mid/premium polygons */{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "tier": "entry" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-74.8330, 40.8528],
+          [-74.8295, 40.8529],
+          [-74.8290, 40.8508],
+          [-74.8328, 40.8507],
+          [-74.8330, 40.8528]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "tier": "mid" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-74.8360, 40.8540],
+          [-74.8330, 40.8541],
+          [-74.8298, 40.8515],
+          [-74.8300, 40.8490],
+          [-74.8360, 40.8492],
+          [-74.8360, 40.8540]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "tier": "premium" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-74.8250, 40.8570],
+          [-74.8210, 40.8572],
+          [-74.8195, 40.8544],
+          [-74.8208, 40.8524],
+          [-74.8245, 40.8530],
+          [-74.8250, 40.8570]
+        ]]
+      }
+    }
+  ]
+}
+};
+  const transitGeoJSON = {/* TODO: Hackettstown Station, Rt 46/517 nodes */{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hackettstown Station",
+        "icon": "🚉",
+        "desc": "NJ Transit Montclair-Boonton Line"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-74.8294, 40.8520]
+      }
+    }
+  ]
+}
+};
+  const schoolsGeoJSON = {/* TODO: High School, Centenary University */{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hackettstown High School",
+        "icon": "🏫",
+        "desc": "Home of the Tigers"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-74.8360, 40.8510]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Centenary University",
+        "icon": "🎓",
+        "desc": "Historic private university"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-74.8290, 40.8555]
+      }
+    }
+  ]
+}
+};
+  const parksGeoJSON = {/* TODO: Riverfront Park, Stephens State Park */{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "name": "Riverfront Park", "icon": "🌳" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-74.8335, 40.8510],
+          [-74.8315, 40.8512],
+          [-74.8310, 40.8498],
+          [-74.8332, 40.8497],
+          [-74.8335, 40.8510]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Stephens State Park", "icon": "🌲" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-74.8210, 40.8590],
+          [-74.8170, 40.8592],
+          [-74.8160, 40.8560],
+          [-74.8200, 40.8558],
+          [-74.8210, 40.8590]
+        ]]
+      }
+    }
+  ]
+}
+};
+  const riverGeoJSON = {/* TODO: Musconetcong River line */{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "name": "Musconetcong River" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-74.8380, 40.8500],
+          [-74.8350, 40.8505],
+          [-74.8320, 40.8508],
+          [-74.8290, 40.8510],
+          [-74.8260, 40.8513],
+          [-74.8230, 40.8515]
+        ]
+      }
+    }
+  ]
+}
+};
 
   // --- Tooltips / popups ---
   function neighborhoodPopup(feature, layer) {
