@@ -194,68 +194,6 @@
     }
   ]
 };
-  const schoolsGeoJSON = {
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Hackettstown High School",
-        "icon": "🏫",
-        "desc": "Home of the Tigers"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [-74.8360, 40.8510]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Centenary University",
-        "icon": "🎓",
-        "desc": "Historic private university"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [-74.8290, 40.8555]
-      }
-    }
-  ]
-};
-  const parksGeoJSON = {
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": { "name": "Riverfront Park", "icon": "🌳" },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [[
-          [-74.8335, 40.8510],
-          [-74.8315, 40.8512],
-          [-74.8310, 40.8498],
-          [-74.8332, 40.8497],
-          [-74.8335, 40.8510]
-        ]]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": { "name": "Stephens State Park", "icon": "🌲" },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [[
-          [-74.8210, 40.8590],
-          [-74.8170, 40.8592],
-          [-74.8160, 40.8560],
-          [-74.8200, 40.8558],
-          [-74.8210, 40.8590]
-        ]]
-      }
-    }
-  ]
-};
 
   // --- Tooltips / popups ---
   function neighborhoodPopup(feature, layer) {
@@ -300,30 +238,102 @@
     onEachFeature: pointPopup
   });
 
+  const schoolsGeoJSON = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hatchery Hill Elementary School",
+        "icon": "🏫",
+        "desc": "Grades PK–2 | 398 5th Ave | (908) 852-8550"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-74.8364, 40.8436]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Willow Grove Elementary School",
+        "icon": "🏫",
+        "desc": "Grades 2–4 | 601 Willow Grove St | (908) 852-2805"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-74.8181, 40.8632]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hackettstown Middle School",
+        "icon": "🏫",
+        "desc": "Grades 5–8 | 500 Washington St | (908) 852-8554"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-74.8279, 40.8500]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hackettstown High School",
+        "icon": "🏫",
+        "desc": "Grades 9–12 | 599 Warren St | Home of the Tigers"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-74.8297, 40.8431]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Centenary University",
+        "icon": "🎓",
+        "desc": "400 Jefferson St | Private liberal arts university"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-74.8343, 40.8472]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hackettstown Medical Center",
+        "icon": "🏥",
+        "desc": "651 Willow Grove St | Atlantic Health System | Open 24 hours"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-74.8159, 40.8617]
+      }
+    }
+  ]
+};
   const schoolsLayer = L.geoJSON(schoolsGeoJSON, {
     pointToLayer: (f, latlng) => L.marker(latlng, { icon: iconBlack }),
     onEachFeature: pointPopup
   });
 
-  const parksLayer = L.geoJSON(parksGeoJSON, {
-    style: { color: '#2e7d32', weight: 2, fillColor: '#66bb6a', fillOpacity: 0.4 },
-    onEachFeature: pointPopup
-  });
 
 
   // --- Layer control ---
   const overlays = {
     'Neighborhoods': neighborhoodsLayer,
     'Transit': transitLayer,
-    'Schools': schoolsLayer,
-    'Parks': parksLayer
+    'Schools & Hospital': schoolsLayer
   };
 
   L.control.layers(null, overlays, { collapsed: false }).addTo(map);
 
   // Add default visible layers
   neighborhoodsLayer.addTo(map);
-  parksLayer.addTo(map);
+  schoolsLayer.addTo(map);
 
   // --- Legend ---
   const legend = L.control({ position: 'bottomright' });
